@@ -127,12 +127,12 @@ export const FillBlankActivity = ({ onComplete, onBack }: FillBlankActivityProps
               ) : (
                 <XCircle className="w-8 h-8 text-destructive" />
               )}
-              <span className={`text-xl font-bold ${isCorrect ? 'text-success' : 'text-destructive'}`}>
+              <span className={`text-md font-bold ${isCorrect ? 'text-success' : 'text-destructive'}`}>
                 {isCorrect ? 'Perfect!' : 'Try again!'}
               </span>
             </div>
             
-            <p className="text-2xl mb-2">
+            <p className="text-2xl mb-4">
               Answer: <strong>{correctAnswer}</strong>
             </p>
 

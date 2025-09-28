@@ -110,7 +110,7 @@ export const MeaningMatch = ({ onComplete, onBack }: MeaningMatchProps) => {
               ) : (
                 <XCircle className="w-8 h-8 text-destructive" />
               )}
-              <span className={`text-xl font-bold ${isCorrect ? 'text-success' : 'text-destructive'}`}>
+              <span className={`text-md font-bold ${isCorrect ? 'text-success' : 'text-destructive'}`}>
                 {isCorrect ? 'Correct!' : 'Try again!'}
               </span>
             </div>
