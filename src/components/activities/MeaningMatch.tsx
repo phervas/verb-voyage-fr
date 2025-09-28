@@ -51,7 +51,19 @@ export const MeaningMatch = ({ onComplete, onBack }: MeaningMatchProps) => {
       } else {
         nextQuestion();
       }
-    }, 1000);
+    }, 5000);
+  };
+
+  const handleNextQuestion = () => {
+    if (questionCount >= 5) {
+      onComplete({
+        correct: isCorrect,
+        verbId: currentVerb?.infinitive || '',
+        activityType: 'meaning-match'
+      });
+    } else {
+      nextQuestion();
+    }
   };
 
   const nextQuestion = () => {
@@ -107,9 +119,19 @@ export const MeaningMatch = ({ onComplete, onBack }: MeaningMatchProps) => {
               "{currentVerb.french}" = <strong>{currentVerb.infinitive}</strong>
             </p>
             
-            {questionCount < 5 && (
-              <p className="text-sm text-muted-foreground">Next question in 1 second...</p>
-            )}
+            <div className="space-y-3">
+              <Button 
+                onClick={handleNextQuestion}
+                size="lg"
+                className="w-full"
+              >
+                <RotateCcw className="w-4 h-4 mr-2" />
+                {questionCount >= 5 ? 'Finish Challenge' : 'Next Question'}
+              </Button>
+              <p className="text-sm text-muted-foreground">
+                Auto-advancing in 5 seconds...
+              </p>
+            </div>
           </div>
         )}
       </div>

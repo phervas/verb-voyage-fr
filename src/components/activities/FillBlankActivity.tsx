@@ -59,7 +59,19 @@ export const FillBlankActivity = ({ onComplete, onBack }: FillBlankActivityProps
       } else {
         nextQuestion();
       }
-    }, 1500);
+    }, 5000);
+  };
+
+  const handleNextQuestion = () => {
+    if (questionCount >= 5) {
+      onComplete({
+        correct: isCorrect,
+        verbId: currentVerb?.infinitive || '',
+        activityType: 'fill-blank'
+      });
+    } else {
+      nextQuestion();
+    }
   };
 
   const nextQuestion = () => {
@@ -128,9 +140,19 @@ export const FillBlankActivity = ({ onComplete, onBack }: FillBlankActivityProps
               {sentence.replace('_____', correctAnswer)}
             </p>
             
-            {questionCount < 5 && (
-              <p className="text-sm text-muted-foreground">Next question in 1.5 seconds...</p>
-            )}
+            <div className="space-y-3">
+              <Button 
+                onClick={handleNextQuestion}
+                size="lg"
+                className="w-full"
+              >
+                <RotateCcw className="w-4 h-4 mr-2" />
+                {questionCount >= 5 ? 'Finish Challenge' : 'Next Sentence'}
+              </Button>
+              <p className="text-sm text-muted-foreground">
+                Auto-advancing in 5 seconds...
+              </p>
+            </div>
           </div>
         )}
       </div>

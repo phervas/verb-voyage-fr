@@ -76,7 +76,19 @@ export const PastFormQuiz = ({ onComplete, onBack, type }: PastFormQuizProps) =>
       } else {
         nextQuestion();
       }
-    }, 1000);
+    }, 5000);
+  };
+
+  const handleNextQuestion = () => {
+    if (questionCount >= 5) {
+      onComplete({
+        correct: isCorrect,
+        verbId: currentVerb?.infinitive || '',
+        activityType: type === 'past' ? 'past-form' : 'past-participle'
+      });
+    } else {
+      nextQuestion();
+    }
   };
 
   const nextQuestion = () => {
@@ -140,9 +152,19 @@ export const PastFormQuiz = ({ onComplete, onBack, type }: PastFormQuizProps) =>
               <strong>{currentVerb.infinitive}</strong> → <strong>{correctAnswer}</strong>
             </p>
             
-            {questionCount < 5 && (
-              <p className="text-sm text-muted-foreground">Next question in 1 second...</p>
-            )}
+            <div className="space-y-3">
+              <Button 
+                onClick={handleNextQuestion}
+                size="lg"
+                className="w-full"
+              >
+                <RotateCcw className="w-4 h-4 mr-2" />
+                {questionCount >= 5 ? 'Finish Challenge' : 'Next Question'}
+              </Button>
+              <p className="text-sm text-muted-foreground">
+                Auto-advancing in 5 seconds...
+              </p>
+            </div>
           </div>
         )}
       </div>
