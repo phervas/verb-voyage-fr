@@ -136,7 +136,7 @@ export const FillBlankActivity = ({ onComplete, onBack }: FillBlankActivityProps
               Answer: <strong>{correctAnswer}</strong>
             </p>
 
-            <p className="text-sm text-muted-foreground mb-4">
+            <p className="text-2xl text-muted-foreground mb-4">
               {sentence.replace('_____', correctAnswer)}
             </p>
             
