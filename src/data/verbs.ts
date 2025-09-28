@@ -64,14 +64,44 @@ export const IRREGULAR_VERBS: IrregularVerb[] = [
 ];
 
 export const SAMPLE_SENTENCES = {
-  leave: ['She _____ school early today.', 'They _____ for Paris yesterday.'],
-  lend: ['Can you _____ me your pen?', 'He _____ his friend some money.'],
-  let: ['Please _____ me help you.', 'She _____ the dog outside.'],
-  lie: ['I need to _____ down for a while.', 'The cat _____ on the sofa.'],
-  lose: ['Don\'t _____ your keys!', 'He _____ the game yesterday.'],
-  make: ['Let\'s _____ a cake together.', 'She _____ a beautiful drawing.'],
-  mean: ['What does this word _____?', 'I didn\'t _____ to hurt you.'],
-  meet: ['Nice to _____ you!', 'We _____ at the park last week.'],
-  pay: ['I need to _____ for this book.', 'She _____ the bill yesterday.'],
-  put: ['Please _____ your books away.', 'He _____ the keys on the table.']
+  leave: [
+    'She _____ school early today.',
+    'They have _____ for Paris already.'
+  ],
+  lend: [
+    'He _____ me his pen yesterday.',
+    'She has _____ her friend some money.'
+  ],
+  let: [
+    'She _____ the dog outside.',
+    'They have _____ him join the game.'
+  ],
+  lie: [
+    'The cat _____ on the sofa yesterday.',
+    'He has _____ on the bed all morning.'
+  ],
+  lose: [
+    'He _____ the game yesterday.',
+    'I have _____ my keys again.'
+  ],
+  make: [
+    'She _____ a beautiful drawing.',
+    'They have _____ a big cake.'
+  ],
+  mean: [
+    'He _____ what he said.',
+    'I have never _____ to hurt you.'
+  ],
+  meet: [
+    'We _____ at the park last week.',
+    'I have _____ many new friends.'
+  ],
+  pay: [
+    'She _____ the bill yesterday.',
+    'I have already _____ for this book.'
+  ],
+  put: [
+    'He _____ the keys on the table.',
+    'She has _____ her toys away.'
+  ]
 };
