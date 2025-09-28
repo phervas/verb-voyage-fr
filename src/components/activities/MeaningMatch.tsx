@@ -122,15 +122,13 @@ export const MeaningMatch = ({ onComplete, onBack }: MeaningMatchProps) => {
             <div className="space-y-3">
               <Button 
                 onClick={handleNextQuestion}
-                size="lg"
+                size="sm"
                 className="w-full"
               >
                 <RotateCcw className="w-4 h-4 mr-2" />
                 {questionCount >= 5 ? 'Finish Challenge' : 'Next'}
               </Button>
-              <p className="text-sm text-muted-foreground">
-                Auto-advancing in 5 seconds...
-              </p>
+    
             </div>
           </div>
         )}
