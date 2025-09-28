@@ -59,7 +59,7 @@ export const FillBlankActivity = ({ onComplete, onBack }: FillBlankActivityProps
       } else {
         nextQuestion();
       }
-    }, 5000);
+    }, 3000);
   };
 
   const handleNextQuestion = () => {

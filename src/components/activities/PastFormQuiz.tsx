@@ -76,7 +76,7 @@ export const PastFormQuiz = ({ onComplete, onBack, type }: PastFormQuizProps) =>
       } else {
         nextQuestion();
       }
-    }, 5000);
+    }, 3000);
   };
 
   const handleNextQuestion = () => {
@@ -159,7 +159,7 @@ export const PastFormQuiz = ({ onComplete, onBack, type }: PastFormQuizProps) =>
                 className="w-full"
               >
                 <RotateCcw className="w-4 h-4 mr-2" />
-                {questionCount >= 5 ? 'Finish Challenge' : 'Next Question'}
+                {questionCount >= 5 ? 'Finish Challenge' : 'Next'}
               </Button>
               <p className="text-sm text-muted-foreground">
                 Auto-advancing in 5 seconds...
