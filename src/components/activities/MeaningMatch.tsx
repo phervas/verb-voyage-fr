@@ -15,6 +15,8 @@ export const MeaningMatch = ({ onComplete, onBack }: MeaningMatchProps) => {
   const [selectedAnswer, setSelectedAnswer] = useState<IrregularVerb | null>(null);
   const [showResult, setShowResult] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
+  const [questionCount, setQuestionCount] = useState(1);
+  const [score, setScore] = useState(0);
 
   const generateQuestion = () => {
     const verb = IRREGULAR_VERBS[Math.floor(Math.random() * IRREGULAR_VERBS.length)];
@@ -37,17 +39,23 @@ export const MeaningMatch = ({ onComplete, onBack }: MeaningMatchProps) => {
     const correct = selected.infinitive === currentVerb?.infinitive;
     setIsCorrect(correct);
     setShowResult(true);
+    if (correct) setScore(score + 1);
 
     setTimeout(() => {
-      onComplete({
-        correct,
-        verbId: currentVerb?.infinitive || '',
-        activityType: 'meaning-match'
-      });
-    }, 1500);
+      if (questionCount >= 5) {
+        onComplete({
+          correct,
+          verbId: currentVerb?.infinitive || '',
+          activityType: 'meaning-match'
+        });
+      } else {
+        nextQuestion();
+      }
+    }, 1000);
   };
 
   const nextQuestion = () => {
+    setQuestionCount(questionCount + 1);
     generateQuestion();
   };
 
@@ -57,20 +65,15 @@ export const MeaningMatch = ({ onComplete, onBack }: MeaningMatchProps) => {
     <div className="w-full max-w-2xl mx-auto p-6">
       <div className="game-card p-8 text-center">
         <div className="mb-6">
-          <Button 
-            variant="outline" 
-            onClick={onBack}
-            className="mb-4"
-          >
-            ← Back to Activities
-          </Button>
+          <div className="flex items-center justify-between mb-4">
+            <Button variant="outline" onClick={onBack}>← Back</Button>
+            <span className="text-sm text-muted-foreground">Question {questionCount}/5 | Score: {score}/5</span>
+          </div>
           <h2 className="text-2xl font-bold text-primary mb-2">Match the Meaning!</h2>
-          <p className="text-muted-foreground">What does this French word mean in English?</p>
         </div>
 
         <div className="mb-8 p-6 bg-primary/10 rounded-2xl">
           <p className="text-2xl font-bold text-primary mb-2">"{currentVerb.french}"</p>
-          <p className="text-muted-foreground">Choose the correct English verb:</p>
         </div>
 
         {!showResult ? (
@@ -96,7 +99,7 @@ export const MeaningMatch = ({ onComplete, onBack }: MeaningMatchProps) => {
                 <XCircle className="w-8 h-8 text-destructive" />
               )}
               <span className={`text-2xl font-bold ${isCorrect ? 'text-success' : 'text-destructive'}`}>
-                {isCorrect ? 'Correct!' : 'Oops!'}
+                {isCorrect ? 'Correct!' : 'Try again!'}
               </span>
             </div>
             
@@ -104,20 +107,9 @@ export const MeaningMatch = ({ onComplete, onBack }: MeaningMatchProps) => {
               "{currentVerb.french}" = <strong>{currentVerb.infinitive}</strong>
             </p>
             
-            {!isCorrect && (
-              <p className="text-muted-foreground mb-4">
-                You selected: <strong>{selectedAnswer?.infinitive}</strong>
-              </p>
+            {questionCount < 5 && (
+              <p className="text-sm text-muted-foreground">Next question in 1 second...</p>
             )}
-            
-            <Button 
-              onClick={nextQuestion}
-              className="mt-4"
-              size="lg"
-            >
-              <RotateCcw className="w-4 h-4 mr-2" />
-              Next Question
-            </Button>
           </div>
         )}
       </div>

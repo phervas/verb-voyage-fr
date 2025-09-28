@@ -16,19 +16,37 @@ export const PastFormQuiz = ({ onComplete, onBack, type }: PastFormQuizProps) =>
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [showResult, setShowResult] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
+  const [questionCount, setQuestionCount] = useState(1);
+  const [score, setScore] = useState(0);
 
   const generateQuestion = () => {
     const verb = IRREGULAR_VERBS[Math.floor(Math.random() * IRREGULAR_VERBS.length)];
     const correctAnswer = type === 'past' ? verb.past : verb.pastParticiple;
     
-    // Generate wrong options from other verbs
-    const otherAnswers = IRREGULAR_VERBS
+    // Generate more challenging wrong options
+    const wrongOptions = [];
+    
+    // Add the infinitive form as a common mistake
+    wrongOptions.push(verb.infinitive);
+    
+    // Add similar-sounding forms from other verbs
+    const similarOptions = IRREGULAR_VERBS
       .filter(v => v.infinitive !== verb.infinitive)
       .map(v => type === 'past' ? v.past : v.pastParticiple)
-      .filter(answer => answer !== correctAnswer);
+      .filter(answer => answer !== correctAnswer && answer.length >= correctAnswer.length - 1 && answer.length <= correctAnswer.length + 1);
     
-    const wrongOptions = [...new Set(otherAnswers)].sort(() => 0.5 - Math.random()).slice(0, 3);
-    const allOptions = [correctAnswer, ...wrongOptions].sort(() => 0.5 - Math.random());
+    wrongOptions.push(...similarOptions.slice(0, 2));
+    
+    // Fill with random options if needed
+    while (wrongOptions.length < 3) {
+      const randomVerb = IRREGULAR_VERBS[Math.floor(Math.random() * IRREGULAR_VERBS.length)];
+      const randomForm = type === 'past' ? randomVerb.past : randomVerb.pastParticiple;
+      if (!wrongOptions.includes(randomForm) && randomForm !== correctAnswer) {
+        wrongOptions.push(randomForm);
+      }
+    }
+    
+    const allOptions = [correctAnswer, ...wrongOptions.slice(0, 3)].sort(() => 0.5 - Math.random());
     
     setCurrentVerb(verb);
     setOptions(allOptions);
@@ -46,17 +64,23 @@ export const PastFormQuiz = ({ onComplete, onBack, type }: PastFormQuizProps) =>
     const correct = selected === correctAnswer;
     setIsCorrect(correct);
     setShowResult(true);
+    if (correct) setScore(score + 1);
 
     setTimeout(() => {
-      onComplete({
-        correct,
-        verbId: currentVerb?.infinitive || '',
-        activityType: type === 'past' ? 'past-form' : 'past-participle'
-      });
-    }, 1500);
+      if (questionCount >= 5) {
+        onComplete({
+          correct,
+          verbId: currentVerb?.infinitive || '',
+          activityType: type === 'past' ? 'past-form' : 'past-participle'
+        });
+      } else {
+        nextQuestion();
+      }
+    }, 1000);
   };
 
   const nextQuestion = () => {
+    setQuestionCount(questionCount + 1);
     generateQuestion();
   };
 
@@ -72,22 +96,17 @@ export const PastFormQuiz = ({ onComplete, onBack, type }: PastFormQuizProps) =>
     <div className="w-full max-w-2xl mx-auto p-6">
       <div className="game-card p-8 text-center">
         <div className="mb-6">
-          <Button 
-            variant="outline" 
-            onClick={onBack}
-            className="mb-4"
-          >
-            ← Back to Activities
-          </Button>
+          <div className="flex items-center justify-between mb-4">
+            <Button variant="outline" onClick={onBack}>← Back</Button>
+            <span className="text-sm text-muted-foreground">Question {questionCount}/5 | Score: {score}/5</span>
+          </div>
           <h2 className="text-2xl font-bold text-primary mb-2">
-            {type === 'past' ? 'Past Tense Quiz' : 'Past Participle Quiz'}
+            {type === 'past' ? 'Past Tense' : 'Past Participle'}
           </h2>
-          <p className="text-muted-foreground">Choose the correct form!</p>
         </div>
 
         <div className="mb-8 p-6 bg-accent/10 rounded-2xl">
           <p className="text-xl font-bold text-foreground mb-2">{questionText}</p>
-          <p className="text-sm text-muted-foreground">"{currentVerb.french}"</p>
         </div>
 
         {!showResult ? (
@@ -113,7 +132,7 @@ export const PastFormQuiz = ({ onComplete, onBack, type }: PastFormQuizProps) =>
                 <XCircle className="w-8 h-8 text-destructive" />
               )}
               <span className={`text-2xl font-bold ${isCorrect ? 'text-success' : 'text-destructive'}`}>
-                {isCorrect ? 'Excellent!' : 'Try again!'}
+                {isCorrect ? 'Excellent!' : 'Keep trying!'}
               </span>
             </div>
             
@@ -121,20 +140,9 @@ export const PastFormQuiz = ({ onComplete, onBack, type }: PastFormQuizProps) =>
               <strong>{currentVerb.infinitive}</strong> → <strong>{correctAnswer}</strong>
             </p>
             
-            {!isCorrect && (
-              <p className="text-muted-foreground mb-4">
-                You selected: <strong>{selectedAnswer}</strong>
-              </p>
+            {questionCount < 5 && (
+              <p className="text-sm text-muted-foreground">Next question in 1 second...</p>
             )}
-            
-            <Button 
-              onClick={nextQuestion}
-              className="mt-4"
-              size="lg"
-            >
-              <RotateCcw className="w-4 h-4 mr-2" />
-              Next Question
-            </Button>
           </div>
         )}
       </div>

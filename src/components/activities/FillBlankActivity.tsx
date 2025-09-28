@@ -18,6 +18,8 @@ export const FillBlankActivity = ({ onComplete, onBack }: FillBlankActivityProps
   const [showResult, setShowResult] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
   const [formType, setFormType] = useState<'past' | 'past-participle'>('past');
+  const [questionCount, setQuestionCount] = useState(1);
+  const [score, setScore] = useState(0);
 
   const generateQuestion = () => {
     const verb = IRREGULAR_VERBS[Math.floor(Math.random() * IRREGULAR_VERBS.length)];
@@ -45,17 +47,23 @@ export const FillBlankActivity = ({ onComplete, onBack }: FillBlankActivityProps
     const correct = userAnswer.trim().toLowerCase() === correctAnswer.toLowerCase();
     setIsCorrect(correct);
     setShowResult(true);
+    if (correct) setScore(score + 1);
 
     setTimeout(() => {
-      onComplete({
-        correct,
-        verbId: currentVerb?.infinitive || '',
-        activityType: 'fill-blank'
-      });
-    }, 2000);
+      if (questionCount >= 5) {
+        onComplete({
+          correct,
+          verbId: currentVerb?.infinitive || '',
+          activityType: 'fill-blank'
+        });
+      } else {
+        nextQuestion();
+      }
+    }, 1500);
   };
 
   const nextQuestion = () => {
+    setQuestionCount(questionCount + 1);
     generateQuestion();
   };
 
@@ -65,23 +73,16 @@ export const FillBlankActivity = ({ onComplete, onBack }: FillBlankActivityProps
     <div className="w-full max-w-2xl mx-auto p-6">
       <div className="game-card p-8 text-center">
         <div className="mb-6">
-          <Button 
-            variant="outline" 
-            onClick={onBack}
-            className="mb-4"
-          >
-            ← Back to Activities
-          </Button>
-          <h2 className="text-2xl font-bold text-primary mb-2">Fill in the Blank</h2>
-          <p className="text-muted-foreground">Complete the sentence with the correct verb form!</p>
+          <div className="flex items-center justify-between mb-4">
+            <Button variant="outline" onClick={onBack}>← Back</Button>
+            <span className="text-sm text-muted-foreground">Question {questionCount}/5 | Score: {score}/5</span>
+          </div>
+          <h2 className="text-2xl font-bold text-primary mb-2">Fill the Blank</h2>
         </div>
 
         <div className="mb-8 p-6 bg-secondary/10 rounded-2xl">
           <p className="text-lg mb-4">
-            <strong>Verb:</strong> {currentVerb.infinitive} ({currentVerb.french})
-          </p>
-          <p className="text-sm text-muted-foreground mb-2">
-            Use the <strong>{formType === 'past' ? 'past tense' : 'past participle'}</strong> form:
+            <strong>{currentVerb.infinitive}</strong> ({formType === 'past' ? 'past tense' : 'past participle'})
           </p>
           <p className="text-xl font-medium text-foreground">
             {sentence}
@@ -115,32 +116,21 @@ export const FillBlankActivity = ({ onComplete, onBack }: FillBlankActivityProps
                 <XCircle className="w-8 h-8 text-destructive" />
               )}
               <span className={`text-2xl font-bold ${isCorrect ? 'text-success' : 'text-destructive'}`}>
-                {isCorrect ? 'Perfect!' : 'Not quite!'}
+                {isCorrect ? 'Perfect!' : 'Try again!'}
               </span>
             </div>
             
             <p className="text-lg mb-2">
-              Correct answer: <strong>{correctAnswer}</strong>
+              Answer: <strong>{correctAnswer}</strong>
             </p>
-            
-            {!isCorrect && (
-              <p className="text-muted-foreground mb-4">
-                Your answer: <strong>{userAnswer}</strong>
-              </p>
-            )}
 
             <p className="text-sm text-muted-foreground mb-4">
-              Complete sentence: {sentence.replace('_____', correctAnswer)}
+              {sentence.replace('_____', correctAnswer)}
             </p>
             
-            <Button 
-              onClick={nextQuestion}
-              className="mt-4"
-              size="lg"
-            >
-              <RotateCcw className="w-4 h-4 mr-2" />
-              Next Sentence
-            </Button>
+            {questionCount < 5 && (
+              <p className="text-sm text-muted-foreground">Next question in 1.5 seconds...</p>
+            )}
           </div>
         )}
       </div>
