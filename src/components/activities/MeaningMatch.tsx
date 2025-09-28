@@ -119,17 +119,6 @@ export const MeaningMatch = ({ onComplete, onBack }: MeaningMatchProps) => {
               "{currentVerb.french}" = <strong>{currentVerb.infinitive}</strong>
             </p>
             
-            <div className="space-y-3">
-              <Button 
-                onClick={handleNextQuestion}
-                size="sm"
-                className="w-full"
-              >
-                <RotateCcw className="w-4 h-4 mr-2" />
-                {questionCount >= 5 ? 'Finish Challenge' : 'Next'}
-              </Button>
-    
-            </div>
           </div>
         )}
       </div>
