@@ -50,7 +50,7 @@ export const FillBlankActivity = ({ onComplete, onBack }: FillBlankActivityProps
     if (correct) setScore(score + 1);
 
     setTimeout(() => {
-      if (questionCount >= 5) {
+      if (questionCount >= 10) {
         onComplete({
           correct,
           verbId: currentVerb?.infinitive || '',
@@ -63,7 +63,7 @@ export const FillBlankActivity = ({ onComplete, onBack }: FillBlankActivityProps
   };
 
   const handleNextQuestion = () => {
-    if (questionCount >= 5) {
+    if (questionCount >= 10) {
       onComplete({
         correct: isCorrect,
         verbId: currentVerb?.infinitive || '',
@@ -87,7 +87,7 @@ export const FillBlankActivity = ({ onComplete, onBack }: FillBlankActivityProps
         <div className="mb-6">
           <div className="flex items-center justify-between mb-4">
             <Button variant="outline" onClick={onBack}>← Back</Button>
-            <span className="text-sm text-muted-foreground">Question {questionCount}/5 | Score: {score}/5</span>
+            <span className="text-sm text-muted-foreground">Question {questionCount}/10 | Score: {score}/10</span>
           </div>
           <h2 className="text-2xl font-bold text-primary mb-2">Fill the Blank</h2>
         </div>
