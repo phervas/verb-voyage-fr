@@ -110,12 +110,12 @@ export const MeaningMatch = ({ onComplete, onBack }: MeaningMatchProps) => {
               ) : (
                 <XCircle className="w-8 h-8 text-destructive" />
               )}
-              <span className={`text-2xl font-bold ${isCorrect ? 'text-success' : 'text-destructive'}`}>
+              <span className={`text-xl font-bold ${isCorrect ? 'text-success' : 'text-destructive'}`}>
                 {isCorrect ? 'Correct!' : 'Try again!'}
               </span>
             </div>
             
-            <p className="text-lg mb-4">
+            <p className="text-2xl mb-4">
               "{currentVerb.french}" = <strong>{currentVerb.infinitive}</strong>
             </p>
             
