@@ -76,7 +76,7 @@ export const PastFormQuiz = ({ onComplete, onBack, type }: PastFormQuizProps) =>
       } else {
         nextQuestion();
       }
-    }, 3000);
+    }, 3500);
   };
 
   const handleNextQuestion = () => {

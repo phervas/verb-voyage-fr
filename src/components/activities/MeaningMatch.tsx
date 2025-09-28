@@ -51,7 +51,7 @@ export const MeaningMatch = ({ onComplete, onBack }: MeaningMatchProps) => {
       } else {
         nextQuestion();
       }
-    }, 3000);
+    }, 3500);
   };
 
   const handleNextQuestion = () => {
