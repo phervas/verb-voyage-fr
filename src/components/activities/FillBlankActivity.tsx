@@ -59,11 +59,11 @@ export const FillBlankActivity = ({ onComplete, onBack }: FillBlankActivityProps
       } else {
         nextQuestion();
       }
-    }, 3500);
+    }, 3000);
   };
 
   const handleNextQuestion = () => {
-    if (questionCount >= 8) {
+    if (questionCount >= 5) {
       onComplete({
         correct: isCorrect,
         verbId: currentVerb?.infinitive || '',
