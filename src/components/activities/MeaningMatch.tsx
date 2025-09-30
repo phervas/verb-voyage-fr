@@ -42,7 +42,7 @@ export const MeaningMatch = ({ onComplete, onBack }: MeaningMatchProps) => {
     if (correct) setScore(score + 1);
 
     setTimeout(() => {
-      if (questionCount >= 10) {
+      if (questionCount >= 20) {
         onComplete({
           correct,
           verbId: currentVerb?.infinitive || '',
@@ -55,7 +55,7 @@ export const MeaningMatch = ({ onComplete, onBack }: MeaningMatchProps) => {
   };
 
   const handleNextQuestion = () => {
-    if (questionCount >= 10) {
+    if (questionCount >= 20) {
       onComplete({
         correct: isCorrect,
         verbId: currentVerb?.infinitive || '',
@@ -79,7 +79,7 @@ export const MeaningMatch = ({ onComplete, onBack }: MeaningMatchProps) => {
         <div className="mb-6">
           <div className="flex items-center justify-between mb-4">
             <Button variant="outline" onClick={onBack}>← Back</Button>
-            <span className="text-sm text-muted-foreground">Question {questionCount}/10 | Score: {score}/10</span>
+            <span className="text-sm text-muted-foreground">Question {questionCount}/20 | Score: {score}/20</span>
           </div>
           <h2 className="text-2xl font-bold text-primary mb-2">Match the Meaning!</h2>
         </div>
