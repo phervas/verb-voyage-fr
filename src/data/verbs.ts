@@ -60,6 +60,66 @@ export const IRREGULAR_VERBS: IrregularVerb[] = [
     past: 'put',
     pastParticiple: 'put',
     french: 'mettre'
+  },
+  {
+    infinitive: 'read',
+    past: 'read',
+    pastParticiple: 'read',
+    french: 'lire'
+  },
+  {
+    infinitive: 'rent',
+    past: 'rent',
+    pastParticiple: 'rent',
+    french: 'louer'
+  },
+  {
+    infinitive: 'ride',
+    past: 'rode',
+    pastParticiple: 'ridden',
+    french: 'aller à bicyclette, à cheval'
+  },
+  {
+    infinitive: 'ring',
+    past: 'rang',
+    pastParticiple: 'rung',
+    french: 'sonner, téléphoner'
+  },
+  {
+    infinitive: 'rise',
+    past: 'rose',
+    pastParticiple: 'risen',
+    french: 'monter, s`elever'
+  },
+  {
+    infinitive: 'run',
+    past: 'ran',
+    pastParticiple: 'run',
+    french: 'courir'
+  },
+  {
+    infinitive: 'say',
+    past: 'said',
+    pastParticiple: 'said',
+    french: 'dire'
+  },
+  {
+    infinitive: 'see',
+    past: 'saw',
+    pastParticiple: 'seen',
+    french: 'voir'
+  },
+  {
+    infinitive: 'sell',
+    past: 'sold',
+    pastParticiple: 'sold',
+    french: 'vendre'
+  },
+  {
+    infinitive: 'send',
+    past: 'sent',
+    pastParticiple: 'sent',
+    french: 'envoyer'
   }
 ];
 
@@ -103,5 +163,45 @@ export const SAMPLE_SENTENCES = {
   put: [
     'He _____ the keys on the table.',
     'She has _____ her toys away.'
+  ],
+  read: [
+    'He _____ a funny story yesterday.',
+    'I have _____ this book three times.'
+  ],
+  rent: [
+    'We _____ a car last weekend.',
+    'They have _____ a flat near the school.'
+  ],
+  ride: [
+    'She _____ her bike to school yesterday.',
+    'I have _____ a horse once.'
+  ],
+  ring: [
+    'The phone _____ five minutes ago.',
+    'She has _____ the bell already.'
+  ],
+  rise: [
+    'The sun _____ early this morning.',
+    'Prices have _____ a lot this year.'
+  ],
+  run: [
+    'He _____ very fast in the race.',
+    'We have _____ in the park many times.'
+  ],
+  say: [
+    'She _____ hello to everyone.',
+    'He has _____ the answer correctly.'
+  ],
+  see: [
+    'I _____ a rainbow yesterday.',
+    'We have _____ that movie before.'
+  ],
+  sell: [
+    'He _____ his bike last week.',
+    'They have _____ many books online.'
+  ],
+  send: [
+    'She _____ a letter yesterday.',
+    'I have already _____ the email.'
   ]
 };
