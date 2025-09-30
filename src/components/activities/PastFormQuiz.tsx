@@ -136,19 +136,19 @@ export const PastFormQuiz = ({ onComplete, onBack, type }: PastFormQuizProps) =>
             ))}
           </div>
         ) : (
-          <div className={`p-6 rounded-2xl ${isCorrect ? 'bg-success/10 border-2 border-success/30' : 'bg-destructive/10 border-2 border-destructive/30'}`}>
+          <div className={`p-6 rounded-lg ${isCorrect ? 'bg-success/10 border-2 border-success/30' : 'bg-destructive/10 border-2 border-destructive/30'}`}>
             <div className="flex items-center justify-center gap-3 mb-4">
               {isCorrect ? (
                 <CheckCircle className="w-8 h-8 text-success" />
               ) : (
                 <XCircle className="w-8 h-8 text-destructive" />
               )}
-              <span className={`text-2xl font-bold ${isCorrect ? 'text-success' : 'text-destructive'}`}>
+              <span className={`text-lg font-bold ${isCorrect ? 'text-success' : 'text-destructive'}`}>
                 {isCorrect ? 'Excellent!' : 'Keep trying!'}
               </span>
             </div>
             
-            <p className="text-lg mb-4">
+            <p className="text-2xl mb-4">
               <strong>{currentVerb.infinitive}</strong> → <strong>{correctAnswer}</strong>
             </p>
             
