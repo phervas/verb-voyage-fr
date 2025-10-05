@@ -2,6 +2,264 @@ import { IrregularVerb } from '@/types/game';
 
 export const IRREGULAR_VERBS: IrregularVerb[] = [
   {
+    infinitive: 'set',
+    past: 'set',
+    pastParticiple: 'set',
+    french: 'poser, placer, mettre'
+  },
+  {
+    infinitive: 'shake',
+    past: 'shook',
+    pastParticiple: 'shaken',
+    french: 'trembler'
+  },
+  {
+    infinitive: 'shine',
+    past: 'shone',
+    pastParticiple: 'shone',
+    french: 'briller'
+  },
+  {
+    infinitive: 'shoot',
+    past: 'shot',
+    pastParticiple: 'shot',
+    french: 'tirer, marquer, tourner (film)'
+  },
+  {
+    infinitive: 'show',
+    past: 'showed',
+    pastParticiple: 'shown',
+    french: 'montrer (se vanter)'
+  },
+  {
+    infinitive: 'shut',
+    past: 'shut',
+    pastParticiple: 'shut',
+    french: 'fermer'
+  },
+  {
+    infinitive: 'sing',
+    past: 'sang',
+    pastParticiple: 'sung',
+    french: 'chanter'
+  },
+  {
+    infinitive: 'sit',
+    past: 'sat',
+    pastParticiple: 'sat',
+    french: "s'asseoir"
+  },
+  {
+    infinitive: 'sleep',
+    past: 'slept',
+    pastParticiple: 'slept',
+    french: 'dormir'
+  },
+  {
+    infinitive: 'smell',
+    past: 'smelt',
+    pastParticiple: 'smelt',
+    french: 'sentir (odorat)'
+  },
+  {
+    infinitive: 'speak',
+    past: 'spoke',
+    pastParticiple: 'spoken',
+    french: 'parler'
+  },
+  {
+    infinitive: 'spend',
+    past: 'spent',
+    pastParticiple: 'spent',
+    french: "dépenser (de l'argent), passer (du temps)"
+  },
+  {
+    infinitive: 'spread',
+    past: 'spread',
+    pastParticiple: 'spread',
+    french: 'étaler, répandre'
+  },
+  {
+    infinitive: 'stand',
+    past: 'stood',
+    pastParticiple: 'stood',
+    french: 'se tenir debout'
+  },
+  {
+    infinitive: 'steal',
+    past: 'stole',
+    pastParticiple: 'stolen',
+    french: 'voler, dérober'
+  },
+  {
+    infinitive: 'strike',
+    past: 'struck',
+    pastParticiple: 'struck',
+    french: 'frapper, donner un coup ; passer un accord'
+  },
+  {
+    infinitive: 'swear',
+    past: 'swore',
+    pastParticiple: 'sworn',
+    french: 'jurer'
+  },
+  {
+    infinitive: 'swim',
+    past: 'swam',
+    pastParticiple: 'swum',
+    french: 'nager'
+  },
+  {
+    infinitive: 'take',
+    past: 'took',
+    pastParticiple: 'taken',
+    french: 'prendre'
+  },
+  {
+    infinitive: 'teach',
+    past: 'taught',
+    pastParticiple: 'taught',
+    french: 'enseigner, apprendre'
+  },
+  {
+    infinitive: 'tear',
+    past: 'tore',
+    pastParticiple: 'torn',
+    french: 'déchirer'
+  },
+  {
+    infinitive: 'tell',
+    past: 'told',
+    pastParticiple: 'told',
+    french: 'dire, raconter'
+  },
+  {
+    infinitive: 'think',
+    past: 'thought',
+    pastParticiple: 'thought',
+    french: 'penser'
+  },
+  {
+    infinitive: 'throw',
+    past: 'threw',
+    pastParticiple: 'thrown',
+    french: 'jeter, lancer'
+  },
+  {
+    infinitive: 'understand',
+    past: 'understood',
+    pastParticiple: 'understood',
+    french: 'comprendre'
+  }
+];
+
+export const SAMPLE_SENTENCES = {
+  set: [
+    'He _____ the table for dinner.',
+    'We have _____ the plates on the table.'
+  ],
+  shake: [
+    'The dog _____ when it was wet.',
+    'I have _____ the bottle well.'
+  ],
+  shine: [
+    'The stars _____ last night.',
+    'The sun has _____ all day.'
+  ],
+  shoot: [
+    'The player _____ and scored.',
+    'They have _____ a new movie here.'
+  ],
+  show: [
+    'She _____ her drawing to the class.',
+    'He has _____ us the way.'
+  ],
+  shut: [
+    'Dad _____ the door quietly.',
+    'I have _____ the window.'
+  ],
+  sing: [
+    'She _____ a song on stage.',
+    'We have _____ together before.'
+  ],
+  sit: [
+    'We _____ on the grass at lunch.',
+    'She has _____ near the window.'
+  ],
+  sleep: [
+    'The baby _____ for two hours.',
+    'I have _____ well this week.'
+  ],
+  smell: [
+    'The flowers _____ sweet in spring.',
+    'I have _____ this perfume before.'
+  ],
+  speak: [
+    'He _____ to the teacher after class.',
+    'She has _____ English for years.'
+  ],
+  spend: [
+    'We _____ the afternoon at the park.',
+    'I have _____ my pocket money.'
+  ],
+  spread: [
+    'She _____ jam on her toast.',
+    'They have _____ the blanket on the grass.'
+  ],
+  stand: [
+    'He _____ in the line quietly.',
+    'We have _____ here for a long time.'
+  ],
+  steal: [
+    'Someone _____ my pencil yesterday.',
+    'The thief has _____ the bike.'
+  ],
+  strike: [
+    'The player _____ the ball hard.',
+    'They have _____ a deal with the shop.'
+  ],
+  swear: [
+    'He _____ he didn’t break it.',
+    'She has _____ to be honest.'
+  ],
+  swim: [
+    'We _____ in the lake yesterday.',
+    'She has _____ in the sea many times.'
+  ],
+  take: [
+    'She _____ the bus to school.',
+    'I have _____ many photos.'
+  ],
+  teach: [
+    'Ms. Lee _____ us a new song.',
+    'He has _____ maths for years.'
+  ],
+  tear: [
+    'He _____ the paper by accident.',
+    'The flag has been _____ by the wind.'
+  ],
+  tell: [
+    'Dad _____ us a funny story.',
+    'She has _____ me the truth.'
+  ],
+  think: [
+    'I _____ about the answer.',
+    'He has _____ of a great idea.'
+  ],
+  throw: [
+    'She _____ the ball to me.',
+    'We have _____ the rubbish away.'
+  ],
+  understand: [
+    'I finally _____ the rule.',
+    'She has _____ the homework.'
+  ]
+};
+
+
+/*
+export const IRREGULAR_VERBS: IrregularVerb[] = [
+  {
     infinitive: 'leave',
     past: 'left',
     pastParticiple: 'left',
@@ -205,3 +463,4 @@ export const SAMPLE_SENTENCES = {
     'I have already _____ the email.'
   ]
 };
+*/
