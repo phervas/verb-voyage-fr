@@ -92,7 +92,7 @@ export const MeaningMatch = ({ onComplete, onBack }: MeaningMatchProps) => {
           <div className="grid grid-cols-2 gap-4">
             {options.map((option, index) => (
               <Button
-                key={index}
+                key={`${questionCount}-${index}`}
                 variant="outline"
                 size="lg"
                 className="h-16 text-lg font-medium game-button"
