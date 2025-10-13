@@ -145,21 +145,9 @@ All colors MUST be HSL.
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .game-card:hover {
-    @apply shadow-[var(--shadow-hover)] scale-105;
-  }
-
   .game-button {
-    @apply rounded-xl font-medium transition-all duration-300 transform;
+    @apply rounded-xl font-medium transform;
     box-shadow: var(--shadow-card);
-  }
-
-  .game-button:hover {
-    @apply scale-105 shadow-[var(--shadow-hover)];
-  }
-
-  .game-button:active {
-    @apply scale-95;
   }
 
   /* Success animations */

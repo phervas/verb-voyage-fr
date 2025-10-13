@@ -80,6 +80,7 @@ const Index = () => {
     return (
       <div className="min-h-screen p-4">
         <MeaningMatch 
+          key="meaning-match"
           onComplete={handleActivityComplete}
           onBack={() => setCurrentActivity(null)}
         />
@@ -91,6 +92,7 @@ const Index = () => {
     return (
       <div className="min-h-screen p-4">
         <PastFormQuiz 
+          key="past-form"
           type="past"
           onComplete={handleActivityComplete}
           onBack={() => setCurrentActivity(null)}
@@ -103,6 +105,7 @@ const Index = () => {
     return (
       <div className="min-h-screen p-4">
         <PastFormQuiz 
+          key="past-participle"
           type="past-participle"
           onComplete={handleActivityComplete}
           onBack={() => setCurrentActivity(null)}
@@ -115,6 +118,7 @@ const Index = () => {
     return (
       <div className="min-h-screen p-4">
         <FillBlankActivity 
+          key="fill-blank"
           onComplete={handleActivityComplete}
           onBack={() => setCurrentActivity(null)}
         />

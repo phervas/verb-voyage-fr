@@ -30,14 +30,13 @@ export const ActivityCard = ({
     <div 
       className={cn(
         "game-card p-6 cursor-pointer group",
-        "hover:scale-105 transition-all duration-300",
         completed && "ring-2 ring-success/30 bg-success/5",
         className
       )}
       onClick={onClick}
     >
       <div className="flex items-start gap-4">
-        <div className="text-4xl text-primary group-hover:scale-110 transition-transform duration-300">
+        <div className="text-4xl text-primary">
           {icon}
         </div>
         
@@ -57,7 +56,7 @@ export const ActivityCard = ({
               {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}
             </span>
             
-            <div className="text-primary font-medium group-hover:translate-x-1 transition-transform duration-300">
+            <div className="text-primary font-medium">
               Play →
             </div>
           </div>

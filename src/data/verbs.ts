@@ -1,7 +1,5 @@
 import { IrregularVerb } from "@/types/game";
 
-import { IrregularVerb } from "@/types/game";
-
 export const IRREGULAR_VERBS: IrregularVerb[] = [
   { infinitive: "leave", past: "left", pastParticiple: "left", french: "quitter, partir" },
   {
@@ -83,7 +81,6 @@ export const SAMPLE_SENTENCES = {
   see: ["I _____ a rainbow yesterday.", "We have _____ that movie before."],
   sell: ["He _____ his bike last week.", "They have _____ many books online."],
   send: ["She _____ a letter yesterday.", "I have already _____ the email."],
-
   set: ["We _____ the table for dinner.", "Mum has _____ the cups on the tray."],
   shake: ["The dog _____ after the bath.", "I have _____ the bottle well."],
   shine: ["The stars _____ last night.", "The sun has _____ all day."],

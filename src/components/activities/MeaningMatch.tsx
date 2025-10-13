@@ -18,13 +18,6 @@ export const MeaningMatch = ({ onComplete, onBack }: MeaningMatchProps) => {
   const [questionCount, setQuestionCount] = useState(1);
   const [score, setScore] = useState(0);
 
-  const blurActive = () => {
-    if (typeof window !== 'undefined') {
-      const el = document.activeElement as HTMLElement | null;
-      el?.blur();
-    }
-  };
-
   const generateQuestion = () => {
     const verb = IRREGULAR_VERBS[Math.floor(Math.random() * IRREGULAR_VERBS.length)];
     const otherVerbs = IRREGULAR_VERBS.filter(v => v.infinitive !== verb.infinitive);
@@ -35,7 +28,6 @@ export const MeaningMatch = ({ onComplete, onBack }: MeaningMatchProps) => {
     setOptions(allOptions);
     setSelectedAnswer(null);
     setShowResult(false);
-    blurActive();
   };
 
   useEffect(() => {
@@ -43,7 +35,6 @@ export const MeaningMatch = ({ onComplete, onBack }: MeaningMatchProps) => {
   }, []);
 
   const handleAnswerSelect = (selected: IrregularVerb) => {
-    blurActive();
     setSelectedAnswer(selected);
     const correct = selected.infinitive === currentVerb?.infinitive;
     setIsCorrect(correct);
@@ -101,7 +92,7 @@ export const MeaningMatch = ({ onComplete, onBack }: MeaningMatchProps) => {
           <div className="grid grid-cols-2 gap-4">
             {options.map((option, index) => (
               <Button
-                key={`${questionCount}-${index}`}
+                key={`${questionCount}-${index}`}                
                 variant="outline"
                 size="lg"
                 className="h-16 text-lg font-medium game-button"

@@ -14,7 +14,7 @@ export const GameHeader = ({ stats }: GameHeaderProps) => {
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="text-center sm:text-left">
             <h1 className="text-3xl sm:text-4xl font-bold text-primary mb-2">
-              🎯 English Verb Quest
+              🎯 Elisa's Verb Quest
             </h1>
             <p className="text-muted-foreground text-lg">
               Master irregular verbs with fun activities!
