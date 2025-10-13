@@ -1,10 +1,10 @@
-# 🇫🇷 Verb Voyage FR
+# 🇬🇧 Verb Voyage EN
 
-An interactive French irregular verb learning game built with React and TypeScript. Master French irregular verbs through engaging activities and track your progress!
+An interactive English irregular verb learning game built with React and TypeScript. Master English irregular verbs through engaging activities and track your progress!
 
 ## 📖 About
 
-Verb Voyage FR is an educational web application designed to help learners practice and memorize French irregular verbs through three different interactive activities. The app features a clean, modern UI and provides immediate feedback to reinforce learning.
+Verb Voyage EN is an educational web application designed to help learners practice and memorize English irregular verbs through three different interactive activities. The app features a clean, modern UI and provides immediate feedback to reinforce learning.
 
 ## ✨ Features
 
