@@ -10,7 +10,10 @@ export const GameHeader = ({ stats }: GameHeaderProps) => {
 
   return (
     <div className="w-full max-w-4xl mx-auto mb-8">
-      <div className="game-card p-6">
+            <h1 className="text-3xl sm:text-4xl font-bold text-primary mb-2 pt-2">
+              🎯 Elisa's Verb Quest
+            </h1>
+      <div className="game-card p-6 hidden">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="text-center sm:text-left">
             <h1 className="text-3xl sm:text-4xl font-bold text-primary mb-2">

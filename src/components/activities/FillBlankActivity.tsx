@@ -1,9 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { IRREGULAR_VERBS, SAMPLE_SENTENCES } from '@/data/verbs';
+import { SAMPLE_SENTENCES } from '@/data/verbs';
 import { IrregularVerb, ActivityResult } from '@/types/game';
-import { CheckCircle, XCircle, RotateCcw } from 'lucide-react';
+import { useActivity } from '@/hooks/useActivity';
+import { useShuffledVerbs } from '@/hooks/useShuffledVerbs';
+import { ActivityLayout } from './ActivityLayout';
+import { QuestionDisplay } from './QuestionDisplay';
+import { ResultDisplay } from './ResultDisplay';
+import { ActivityCompletion } from './ActivityCompletion';
 
 interface FillBlankActivityProps {
   onComplete: (result: ActivityResult) => void;
@@ -11,18 +16,31 @@ interface FillBlankActivityProps {
 }
 
 export const FillBlankActivity = ({ onComplete, onBack }: FillBlankActivityProps) => {
+  const { getCurrentVerb, moveToNext, reset } = useShuffledVerbs();
   const [currentVerb, setCurrentVerb] = useState<IrregularVerb | null>(null);
   const [sentence, setSentence] = useState<string>('');
   const [userAnswer, setUserAnswer] = useState<string>('');
   const [correctAnswer, setCorrectAnswer] = useState<string>('');
-  const [showResult, setShowResult] = useState(false);
-  const [isCorrect, setIsCorrect] = useState(false);
   const [formType, setFormType] = useState<'past' | 'past-participle'>('past');
-  const [questionCount, setQuestionCount] = useState(1);
-  const [score, setScore] = useState(0);
+  
+  const {
+    state,
+    resetQuestionState,
+    resetActivity,
+    handleAnswer,
+    nextQuestion,
+    completeActivity,
+    shouldComplete,
+    questionLimit,
+    timeoutMs
+  } = useActivity({
+    questionLimit: 15,
+    activityType: 'fill-blank',
+    timeoutMs: 1500
+  });
 
   const generateQuestion = () => {
-    const verb = IRREGULAR_VERBS[Math.floor(Math.random() * IRREGULAR_VERBS.length)];
+    const verb = getCurrentVerb();
     const verbKey = verb.infinitive as keyof typeof SAMPLE_SENTENCES;
     const sentences = SAMPLE_SENTENCES[verbKey] || [`Please _____ me know.`, `She _____ it yesterday.`];
     const selectedSentence = sentences[Math.floor(Math.random() * sentences.length)];
@@ -36,7 +54,8 @@ export const FillBlankActivity = ({ onComplete, onBack }: FillBlankActivityProps
     setCorrectAnswer(answer);
     setFormType(useFormType);
     setUserAnswer('');
-    setShowResult(false);
+    moveToNext();
+    resetQuestionState();
   };
 
   useEffect(() => {
@@ -45,105 +64,91 @@ export const FillBlankActivity = ({ onComplete, onBack }: FillBlankActivityProps
 
   const handleSubmit = () => {
     const correct = userAnswer.trim().toLowerCase() === correctAnswer.toLowerCase();
-    setIsCorrect(correct);
-    setShowResult(true);
-    if (correct) setScore(score + 1);
+    handleAnswer(correct);
 
     setTimeout(() => {
-      if (questionCount >= 10) {
-        onComplete({
-          correct,
-          verbId: currentVerb?.infinitive || '',
-          activityType: 'fill-blank'
-        });
+      if (shouldComplete()) {
+        completeActivity(currentVerb?.infinitive || '', correct);
       } else {
         nextQuestion();
+        generateQuestion();
       }
-    }, 3000);
+    }, timeoutMs);
   };
 
-  const handleNextQuestion = () => {
-    if (questionCount >= 10) {
-      onComplete({
-        correct: isCorrect,
-        verbId: currentVerb?.infinitive || '',
-        activityType: 'fill-blank'
-      });
-    } else {
-      nextQuestion();
-    }
-  };
-
-  const nextQuestion = () => {
-    setQuestionCount(questionCount + 1);
+  const handleTryAgain = () => {
+    resetActivity();
+    setUserAnswer('');
+    setCorrectAnswer('');
+    setCurrentVerb(null);
+    setFormType('past');
+    reset();
     generateQuestion();
+  };
+
+  const handleGoHome = () => {
+    const result = completeActivity(currentVerb?.infinitive || '', state.isCorrect);
+    onComplete(result);
   };
 
   if (!currentVerb) return null;
 
+  if (state.isCompleted) {
+    return (
+      <ActivityCompletion
+        title="Fill in the Blank"
+        state={state}
+        questionLimit={questionLimit}
+        onTryAgain={handleTryAgain}
+        onGoHome={handleGoHome}
+      />
+    );
+  }
+
   return (
-    <div className="w-full max-w-2xl mx-auto p-6">
-      <div className="game-card p-8 text-center">
-        <div className="mb-6">
-          <div className="flex items-center justify-between mb-4">
-            <Button variant="outline" onClick={onBack}>← Back</Button>
-            <span className="text-sm text-muted-foreground">Question {questionCount}/10 | Score: {score}/10</span>
-          </div>
-          <h2 className="text-2xl font-bold text-primary mb-2">Fill the Blank</h2>
+    <ActivityLayout
+      title="Fill the Blank"
+      onBack={onBack}
+      state={state}
+      questionLimit={questionLimit}
+    >
+      <QuestionDisplay className="bg-secondary/10">
+        <p className="text-lg mb-4">
+          <strong>{currentVerb.infinitive}</strong> ({formType === 'past' ? 'past tense' : 'past participle'})
+        </p>
+        <p className="text-xl font-medium text-foreground">
+          {sentence}
+        </p>
+      </QuestionDisplay>
+
+      {!state.showResult ? (
+        <div className="space-y-4">
+          <Input
+            value={userAnswer}
+            onChange={(e) => setUserAnswer(e.target.value)}
+            placeholder="Type your answer here..."
+            className="text-center text-lg h-12"
+            onKeyPress={(e) => e.key === 'Enter' && userAnswer.trim() && handleSubmit()}
+          />
+          <Button 
+            onClick={handleSubmit}
+            disabled={!userAnswer.trim()}
+            size="lg"
+            className="w-full"
+          >
+            Check Answer
+          </Button>
         </div>
-
-        <div className="mb-8 p-6 bg-secondary/10 rounded-2xl">
-          <p className="text-lg mb-4">
-            <strong>{currentVerb.infinitive}</strong> ({formType === 'past' ? 'past tense' : 'past participle'})
+      ) : (
+        <ResultDisplay isCorrect={state.isCorrect}>
+          <p className="text-2xl mb-4">
+            Answer: <strong>{correctAnswer}</strong>
           </p>
-          <p className="text-xl font-medium text-foreground">
-            {sentence}
+          <p className="text-2xl text-muted-foreground mb-4">
+            {sentence.replace('_____', correctAnswer)}
           </p>
-        </div>
-
-        {!showResult ? (
-          <div className="space-y-4">
-            <Input
-              value={userAnswer}
-              onChange={(e) => setUserAnswer(e.target.value)}
-              placeholder="Type your answer here..."
-              className="text-center text-lg h-12"
-              onKeyPress={(e) => e.key === 'Enter' && userAnswer.trim() && handleSubmit()}
-            />
-            <Button 
-              onClick={handleSubmit}
-              disabled={!userAnswer.trim()}
-              size="lg"
-              className="w-full"
-            >
-              Check Answer
-            </Button>
-          </div>
-        ) : (
-          <div className={`p-6 rounded-2xl ${isCorrect ? 'bg-success/10 border-2 border-success/30' : 'bg-destructive/10 border-2 border-destructive/30'}`}>
-            <div className="flex items-center justify-center gap-3 mb-4">
-              {isCorrect ? (
-                <CheckCircle className="w-8 h-8 text-success" />
-              ) : (
-                <XCircle className="w-8 h-8 text-destructive" />
-              )}
-              <span className={`text-md font-bold ${isCorrect ? 'text-success' : 'text-destructive'}`}>
-                {isCorrect ? 'Perfect!' : 'Try again!'}
-              </span>
-            </div>
-            
-            <p className="text-2xl mb-4">
-              Answer: <strong>{correctAnswer}</strong>
-            </p>
-
-            <p className="text-2xl text-muted-foreground mb-4">
-              {sentence.replace('_____', correctAnswer)}
-            </p>
-            
-
-          </div>
-        )}
-      </div>
-    </div>
+        </ResultDisplay>
+      )}
+    </ActivityLayout>
   );
 };

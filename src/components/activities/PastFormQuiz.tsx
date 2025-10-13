@@ -2,7 +2,12 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { IRREGULAR_VERBS } from '@/data/verbs';
 import { IrregularVerb, ActivityResult } from '@/types/game';
-import { CheckCircle, XCircle, RotateCcw } from 'lucide-react';
+import { useActivity } from '@/hooks/useActivity';
+import { useShuffledVerbs } from '@/hooks/useShuffledVerbs';
+import { ActivityLayout } from './ActivityLayout';
+import { QuestionDisplay } from './QuestionDisplay';
+import { ResultDisplay } from './ResultDisplay';
+import { ActivityCompletion } from './ActivityCompletion';
 
 interface PastFormQuizProps {
   onComplete: (result: ActivityResult) => void;
@@ -11,16 +16,29 @@ interface PastFormQuizProps {
 }
 
 export const PastFormQuiz = ({ onComplete, onBack, type }: PastFormQuizProps) => {
+  const { getCurrentVerb, moveToNext, reset } = useShuffledVerbs();
   const [currentVerb, setCurrentVerb] = useState<IrregularVerb | null>(null);
   const [options, setOptions] = useState<string[]>([]);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-  const [showResult, setShowResult] = useState(false);
-  const [isCorrect, setIsCorrect] = useState(false);
-  const [questionCount, setQuestionCount] = useState(1);
-  const [score, setScore] = useState(0);
+  
+  const {
+    state,
+    resetQuestionState,
+    resetActivity,
+    handleAnswer,
+    nextQuestion,
+    completeActivity,
+    shouldComplete,
+    questionLimit,
+    timeoutMs
+  } = useActivity({
+    questionLimit: 15,
+    activityType: type === 'past' ? 'past-form' : 'past-participle',
+    timeoutMs: 1500
+  });
 
   const generateQuestion = () => {
-    const verb = IRREGULAR_VERBS[Math.floor(Math.random() * IRREGULAR_VERBS.length)];
+    const verb = getCurrentVerb();
     const correctAnswer = type === 'past' ? verb.past : verb.pastParticiple;
     
     // Generate more challenging wrong options
@@ -51,7 +69,8 @@ export const PastFormQuiz = ({ onComplete, onBack, type }: PastFormQuizProps) =>
     setCurrentVerb(verb);
     setOptions(allOptions);
     setSelectedAnswer(null);
-    setShowResult(false);
+    moveToNext();
+    resetQuestionState();
   };
 
   useEffect(() => {
@@ -62,41 +81,45 @@ export const PastFormQuiz = ({ onComplete, onBack, type }: PastFormQuizProps) =>
     setSelectedAnswer(selected);
     const correctAnswer = type === 'past' ? currentVerb?.past : currentVerb?.pastParticiple;
     const correct = selected === correctAnswer;
-    setIsCorrect(correct);
-    setShowResult(true);
-    if (correct) setScore(score + 1);
+    handleAnswer(correct);
 
     setTimeout(() => {
-      if (questionCount >= 10) {
-        onComplete({
-          correct,
-          verbId: currentVerb?.infinitive || '',
-          activityType: type === 'past' ? 'past-form' : 'past-participle'
-        });
+      if (shouldComplete()) {
+        completeActivity(currentVerb?.infinitive || '', correct);
       } else {
         nextQuestion();
+        generateQuestion();
       }
-    }, 3000);
+    }, timeoutMs);
   };
 
-  const handleNextQuestion = () => {
-    if (questionCount >= 10) {
-      onComplete({
-        correct: isCorrect,
-        verbId: currentVerb?.infinitive || '',
-        activityType: type === 'past' ? 'past-form' : 'past-participle'
-      });
-    } else {
-      nextQuestion();
-    }
-  };
-
-  const nextQuestion = () => {
-    setQuestionCount(questionCount + 1);
+  const handleTryAgain = () => {
+    resetActivity();
+    setSelectedAnswer(null);
+    setCurrentVerb(null);
+    setOptions([]);
+    reset();
     generateQuestion();
   };
 
+  const handleGoHome = () => {
+    const result = completeActivity(currentVerb?.infinitive || '', state.isCorrect);
+    onComplete(result);
+  };
+
   if (!currentVerb) return null;
+
+  if (state.isCompleted) {
+    return (
+      <ActivityCompletion
+        title={`${type === 'past' ? 'Past' : 'Past Participle'} Form Quiz`}
+        state={state}
+        questionLimit={questionLimit}
+        onTryAgain={handleTryAgain}
+        onGoHome={handleGoHome}
+      />
+    );
+  }
 
   const questionText = type === 'past' 
     ? `What is the past tense of "${currentVerb.infinitive}"?`
@@ -105,56 +128,37 @@ export const PastFormQuiz = ({ onComplete, onBack, type }: PastFormQuizProps) =>
   const correctAnswer = type === 'past' ? currentVerb.past : currentVerb.pastParticiple;
 
   return (
-    <div className="w-full max-w-2xl mx-auto p-6">
-      <div className="game-card p-8 text-center">
-        <div className="mb-6">
-          <div className="flex items-center justify-between mb-4">
-            <Button variant="outline" onClick={onBack}>← Back</Button>
-            <span className="text-sm text-muted-foreground">Question {questionCount}/10 | Score: {score}/10</span>
-          </div>
-          <h2 className="text-2xl font-bold text-primary mb-2">
-            {type === 'past' ? 'Past Tense' : 'Past Participle'}
-          </h2>
-        </div>
+    <ActivityLayout
+      title={type === 'past' ? 'Past Tense' : 'Past Participle'}
+      onBack={onBack}
+      state={state}
+      questionLimit={questionLimit}
+    >
+      <QuestionDisplay>
+        <p className="text-xl font-bold text-foreground mb-2">{questionText}</p>
+      </QuestionDisplay>
 
-        <div className="mb-8 p-6 bg-accent/10 rounded-2xl">
-          <p className="text-xl font-bold text-foreground mb-2">{questionText}</p>
+      {!state.showResult ? (
+        <div className="grid grid-cols-2 gap-4">
+          {options.map((option, index) => (
+            <Button
+              key={index}
+              variant="outline"
+              size="lg"
+              className="h-16 text-lg font-medium game-button"
+              onClick={() => handleAnswerSelect(option)}
+            >
+              {option}
+            </Button>
+          ))}
         </div>
-
-        {!showResult ? (
-          <div className="grid grid-cols-2 gap-4">
-            {options.map((option, index) => (
-              <Button
-                key={index}
-                variant="outline"
-                size="lg"
-                className="h-16 text-lg font-medium game-button"
-                onClick={() => handleAnswerSelect(option)}
-              >
-                {option}
-              </Button>
-            ))}
-          </div>
-        ) : (
-          <div className={`p-6 rounded-lg ${isCorrect ? 'bg-success/10 border-2 border-success/30' : 'bg-destructive/10 border-2 border-destructive/30'}`}>
-            <div className="flex items-center justify-center gap-3 mb-4">
-              {isCorrect ? (
-                <CheckCircle className="w-8 h-8 text-success" />
-              ) : (
-                <XCircle className="w-8 h-8 text-destructive" />
-              )}
-              <span className={`text-lg font-bold ${isCorrect ? 'text-success' : 'text-destructive'}`}>
-                {isCorrect ? 'Excellent!' : 'Keep trying!'}
-              </span>
-            </div>
-            
-            <p className="text-2xl mb-4">
-              <strong>{currentVerb.infinitive}</strong> → <strong>{correctAnswer}</strong>
-            </p>
-            
-          </div>
-        )}
-      </div>
-    </div>
+      ) : (
+        <ResultDisplay isCorrect={state.isCorrect}>
+          <p className="text-2xl mb-4">
+            <strong>{currentVerb.infinitive}</strong> → <strong>{correctAnswer}</strong>
+          </p>
+        </ResultDisplay>
+      )}
+    </ActivityLayout>
   );
 };
