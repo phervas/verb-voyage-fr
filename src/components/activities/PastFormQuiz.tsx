@@ -32,7 +32,7 @@ export const PastFormQuiz = ({ onComplete, onBack, type }: PastFormQuizProps) =>
     questionLimit,
     timeoutMs
   } = useActivity({
-    questionLimit: 15,
+    questionLimit: 50,
     activityType: type === 'past' ? 'past-form' : 'past-participle',
     timeoutMs: 1500
   });

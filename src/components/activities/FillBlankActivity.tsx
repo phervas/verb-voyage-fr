@@ -34,7 +34,7 @@ export const FillBlankActivity = ({ onComplete, onBack }: FillBlankActivityProps
     questionLimit,
     timeoutMs
   } = useActivity({
-    questionLimit: 15,
+    questionLimit: 50,
     activityType: 'fill-blank',
     timeoutMs: 1500
   });
