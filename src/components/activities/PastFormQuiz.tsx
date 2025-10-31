@@ -6,7 +6,7 @@ import { useActivity } from '@/hooks/useActivity';
 import { useShuffledVerbs } from '@/hooks/useShuffledVerbs';
 import { ActivityLayout } from './ActivityLayout';
 import { QuestionDisplay } from './QuestionDisplay';
-import { ResultDisplay } from './ResultDisplay';
+import { AnswerOptionsGrid } from './AnswerOptionsGrid';
 import { ActivityCompletion } from './ActivityCompletion';
 
 interface PastFormQuizProps {
@@ -83,6 +83,7 @@ export const PastFormQuiz = ({ onComplete, onBack, type }: PastFormQuizProps) =>
     const correct = selected === correctAnswer;
     handleAnswer(correct);
 
+    const delay = correct ? 1000 : 1800;
     setTimeout(() => {
       if (shouldComplete()) {
         completeActivity(currentVerb?.infinitive || '', correct);
@@ -90,7 +91,7 @@ export const PastFormQuiz = ({ onComplete, onBack, type }: PastFormQuizProps) =>
         nextQuestion();
         generateQuestion();
       }
-    }, timeoutMs);
+    }, delay);
   };
 
   const handleTryAgain = () => {
@@ -124,7 +125,6 @@ export const PastFormQuiz = ({ onComplete, onBack, type }: PastFormQuizProps) =>
   const questionText = type === 'past' 
     ? `What is the past tense of "${currentVerb.infinitive}"?`
     : `What is the past participle of "${currentVerb.infinitive}"?`;
-
   const correctAnswer = type === 'past' ? currentVerb.past : currentVerb.pastParticiple;
 
   return (
@@ -138,27 +138,16 @@ export const PastFormQuiz = ({ onComplete, onBack, type }: PastFormQuizProps) =>
         <p className="text-xl font-bold text-foreground mb-2">{questionText}</p>
       </QuestionDisplay>
 
-      {!state.showResult ? (
-        <div className="grid grid-cols-2 gap-4">
-          {options.map((option, index) => (
-            <Button
-              key={index}
-              variant="outline"
-              size="lg"
-              className="h-16 text-lg font-medium game-button"
-              onClick={() => handleAnswerSelect(option)}
-            >
-              {option}
-            </Button>
-          ))}
-        </div>
-      ) : (
-        <ResultDisplay isCorrect={state.isCorrect}>
-          <p className="text-2xl mb-4">
-            <strong>{currentVerb.infinitive}</strong> → <strong>{correctAnswer}</strong>
-          </p>
-        </ResultDisplay>
-      )}
+      <AnswerOptionsGrid
+        options={options}
+        getKey={(_, index) => `${state.questionCount}-${index}`}
+        getLabel={(o) => o}
+        isCorrectOption={(o) => o === correctAnswer}
+        selectedOption={selectedAnswer}
+        showResult={state.showResult}
+        isSelectionCorrect={state.isCorrect}
+        onSelect={handleAnswerSelect}
+      />
     </ActivityLayout>
   );
 };

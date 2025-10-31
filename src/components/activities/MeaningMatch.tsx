@@ -6,7 +6,7 @@ import { useActivity } from '@/hooks/useActivity';
 import { useShuffledVerbs } from '@/hooks/useShuffledVerbs';
 import { ActivityLayout } from './ActivityLayout';
 import { QuestionDisplay } from './QuestionDisplay';
-import { ResultDisplay } from './ResultDisplay';
+import { AnswerOptionsGrid } from './AnswerOptionsGrid';
 import { ActivityCompletion } from './ActivityCompletion';
 
 interface MeaningMatchProps {
@@ -58,6 +58,7 @@ export const MeaningMatch = ({ onComplete, onBack }: MeaningMatchProps) => {
     const correct = selected.infinitive === currentVerb?.infinitive;
     handleAnswer(correct);
 
+    const delay = correct ? 1000 : 1800;
     setTimeout(() => {
       if (shouldComplete()) {
         completeActivity(currentVerb?.infinitive || '', correct);
@@ -65,7 +66,7 @@ export const MeaningMatch = ({ onComplete, onBack }: MeaningMatchProps) => {
         nextQuestion();
         generateQuestion();
       }
-    }, timeoutMs);
+    }, delay);
   };
 
   const handleTryAgain = () => {
@@ -107,27 +108,16 @@ export const MeaningMatch = ({ onComplete, onBack }: MeaningMatchProps) => {
         <p className="text-2xl font-bold text-primary mb-2">"{currentVerb.french}"</p>
       </QuestionDisplay>
 
-      {!state.showResult ? (
-        <div className="grid grid-cols-2 gap-4">
-          {options.map((option, index) => (
-            <Button
-              key={`${state.questionCount}-${index}`}                
-              variant="outline"
-              size="lg"
-              className="h-16 text-lg font-medium game-button"
-              onClick={() => handleAnswerSelect(option)}
-            >
-              {option.infinitive}
-            </Button>
-          ))}
-        </div>
-      ) : (
-        <ResultDisplay isCorrect={state.isCorrect}>
-          <p className="text-2xl mb-4">
-            "{currentVerb.french}" = <strong>{currentVerb.infinitive}</strong>
-          </p>
-        </ResultDisplay>
-      )}
+      <AnswerOptionsGrid
+        options={options}
+        getKey={(_, index) => `${state.questionCount}-${index}`}
+        getLabel={(o) => o.infinitive}
+        isCorrectOption={(o) => o.infinitive === currentVerb.infinitive}
+        selectedOption={selectedAnswer}
+        showResult={state.showResult}
+        isSelectionCorrect={state.isCorrect}
+        onSelect={handleAnswerSelect}
+      />
     </ActivityLayout>
   );
 };

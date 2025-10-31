@@ -150,6 +150,20 @@ All colors MUST be HSL.
     box-shadow: var(--shadow-card);
   }
 
+  /* Answer feedback states */
+  .answer-correct {
+    @apply ring-4 ring-success bg-success/15 text-foreground font-semibold scale-105;
+    transition: transform 150ms ease, box-shadow 150ms ease, opacity 150ms ease, background-color 150ms ease;
+  }
+
+  .answer-correct-target {
+    @apply ring-4 ring-success bg-success/15 text-foreground font-semibold;
+  }
+
+  .answer-wrong {
+    @apply ring-4 ring-destructive bg-destructive/15 text-foreground font-semibold;
+  }
+
   /* Success animations */
   .success-bounce {
     animation: successBounce 0.6s ease-out;
@@ -159,8 +173,22 @@ All colors MUST be HSL.
     animation: shake 0.5s ease-in-out;
   }
 
+  /* Softer shake for wrong answers */
+  .shake-soft {
+    animation: shakeSoft 0.28s ease-in-out;
+  }
+
   .fade-in {
     animation: fadeIn 0.5s ease-out;
+  }
+
+  .answer-floater {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    animation: floaterUp 0.8s ease-out forwards;
   }
 }
 
@@ -199,5 +227,50 @@ All colors MUST be HSL.
 
   .pulse-gentle {
     animation: pulse-gentle 2s infinite;
+  }
+
+  /* Softer shake keyframes */
+  @keyframes shakeSoft {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-2px); }
+    75% { transform: translateX(2px); }
+  }
+
+  /* Right answer pop */
+  @keyframes successPop {
+    0% { transform: scale(1); }
+    60% { transform: scale(1.08); }
+    100% { transform: scale(1); }
+  }
+
+  .success-pop {
+    animation: successPop 220ms ease-out;
+  }
+
+  /* Expanding halo behind correct button */
+  @keyframes successHalo {
+    0% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(1.4); }
+  }
+
+  .success-halo::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 85%;
+    height: 65%;
+    border-radius: 9999px;
+    box-shadow: 0 0 0 3px hsl(var(--success));
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    pointer-events: none;
+    animation: successHalo 500ms ease-out forwards;
+  }
+
+  @keyframes floaterUp {
+    0% { opacity: 0; transform: translate(-50%, -10%); }
+    10% { opacity: 1; transform: translate(-50%, -30%); }
+    100% { opacity: 0; transform: translate(-50%, -70%); }
   }
 }
