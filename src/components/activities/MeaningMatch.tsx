@@ -31,7 +31,7 @@ export const MeaningMatch = ({ onComplete, onBack }: MeaningMatchProps) => {
     questionLimit,
     timeoutMs
   } = useActivity({
-    questionLimit: 50,
+    questionLimit: 100,
     activityType: 'meaning-match',
     timeoutMs: 1500 // 1.8 seconds instead of default 3 seconds
   });
