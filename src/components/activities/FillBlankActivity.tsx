@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { SAMPLE_SENTENCES } from '@/data/verbs';
+import { IRREGULAR_VERBS, SAMPLE_SENTENCES } from '@/data/verbs';
 import { IrregularVerb, ActivityResult } from '@/types/game';
 import { useActivity } from '@/hooks/useActivity';
 import { useShuffledVerbs } from '@/hooks/useShuffledVerbs';
@@ -34,7 +34,7 @@ export const FillBlankActivity = ({ onComplete, onBack }: FillBlankActivityProps
     questionLimit,
     timeoutMs
   } = useActivity({
-    questionLimit: 100,
+    questionLimit: IRREGULAR_VERBS.length,
     activityType: 'fill-blank',
     timeoutMs: 1500
   });
